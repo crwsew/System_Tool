@@ -1,5 +1,5 @@
 from system_info import display_system_info
-from process_manager import display_processes
+from process_manager import display_processes, kill_process
 from file_manager import list_files, create_file, delete_file, file_size
 from logger import log_action
 
@@ -31,6 +31,15 @@ def file_manager_menu():
     else:
         print("Invalid choice")
 
+def process_menu():
+    print("\n--- Process Viewer ---")
+    display_processes()
+    print("k. Kill a process")
+    sub = input("Choose option or press Enter to continue: ")
+    if sub.lower() == "k":
+        action_result = kill_process()
+        log_action(action_result)
+
 def main_menu():
     while True:
         print("\n====== System Tool ======")
@@ -46,7 +55,7 @@ def main_menu():
             log_action("Viewed System Info")
 
         elif choice == "2":
-            display_processes()
+            process_menu()
             log_action("Viewed Processes")
 
         elif choice == "3":

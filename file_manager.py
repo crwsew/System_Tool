@@ -1,31 +1,38 @@
 import os
 from pathlib import Path
+from rich.console import Console
+from rich.table import Table
+
+console = Console()
 
 def list_files(path="."):
-    print(f"\nFiles in {path}:")
     try:
-        for f in Path(path).iterdir():
-            print(f.name)
+        files = list(Path(path).iterdir())
+        table = Table(title=f"Files in {path}")
+        table.add_column("Filename", style="cyan")
+        for f in files:
+            table.add_row(f.name)
+        console.print(table)
     except FileNotFoundError:
-        print("Path not found.")
+        print("[ERROR] Path not found.")
 
 def create_file(filename):
     try:
         Path(filename).touch(exist_ok=False)
-        print(f"File created: {filename}")
+        print(f"[SUCCESS] File created: {filename}")
     except FileExistsError:
-        print("File already exists.")
+        print("[ERROR] File already exists.")
 
 def delete_file(filename):
     if Path(filename).exists():
         os.remove(filename)
-        print(f"File deleted: {filename}")
+        print(f"[SUCCESS] File deleted: {filename}")
     else:
-        print("File not found.")
+        print("[ERROR] File not found.")
 
 def file_size(filename):
     if Path(filename).exists():
         size = Path(filename).stat().st_size
-        print(f"Size of {filename}: {size} bytes")
+        print(f"[INFO] Size of {filename}: {size} bytes")
     else:
-        print("File not found.")
+        print("[ERROR] File not found.")
