@@ -15,6 +15,8 @@ def list_files(path="."):
         console.print(table)
     except FileNotFoundError:
         print("[ERROR] Path not found.")
+    except PermissionError:
+        print("[ERROR] Permission denied.")
 
 def create_file(filename):
     try:
@@ -22,17 +24,25 @@ def create_file(filename):
         print(f"[SUCCESS] File created: {filename}")
     except FileExistsError:
         print("[ERROR] File already exists.")
+    except PermissionError:
+        print("[ERROR] Permission denied.")
 
 def delete_file(filename):
-    if Path(filename).exists():
-        os.remove(filename)
-        print(f"[SUCCESS] File deleted: {filename}")
-    else:
-        print("[ERROR] File not found.")
+    try:
+        if Path(filename).exists():
+            os.remove(filename)
+            print(f"[SUCCESS] File deleted: {filename}")
+        else:
+            print("[ERROR] File not found.")
+    except PermissionError:
+        print("[ERROR] Permission denied.")
 
 def file_size(filename):
-    if Path(filename).exists():
-        size = Path(filename).stat().st_size
-        print(f"[INFO] Size of {filename}: {size} bytes")
-    else:
-        print("[ERROR] File not found.")
+    try:
+        if Path(filename).exists():
+            size = Path(filename).stat().st_size
+            print(f"[INFO] Size of {filename}: {size} bytes")
+        else:
+            print("[ERROR] File not found.")
+    except PermissionError:
+        print("[ERROR] Permission denied.")

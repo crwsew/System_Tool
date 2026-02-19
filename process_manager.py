@@ -24,6 +24,7 @@ def display_processes(limit=10):
 
     console.print(table)
 
+
 def kill_process():
     pid_input = input("Enter PID to kill: ")
     try:
@@ -33,12 +34,19 @@ def kill_process():
         proc.wait(timeout=3)
         print(f"[SUCCESS] Process {pid} terminated.")
         return f"Killed process {pid}"
+
     except psutil.NoSuchProcess:
         print("[ERROR] Process not found.")
         return f"Failed to kill process {pid_input}"
+
     except psutil.AccessDenied:
         print("[ERROR] Permission denied.")
         return f"Failed to kill process {pid_input} (Access Denied)"
+
+    except psutil.TimeoutExpired:
+        print("[ERROR] Process termination timed out.")
+        return f"Failed to kill process {pid_input} (Timeout)"
+
     except Exception as e:
         print(f"[ERROR] {e}")
         return f"Failed to kill process {pid_input} ({e})"
